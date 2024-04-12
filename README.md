@@ -1,54 +1,70 @@
-# EPSI App
+# Getting Started with Create React App
 
-## Introduction
-EPSI App is a dynamic data visualization tool developed by Benjamin Yoon and Medcap Computing at the PIGI Lab (University of Pennsylvania Perelman School of Medicine), designed to facilitate the analysis and interpretation of EPSI (Echo Planar Spectroscopic Imaging) data. Through an intuitive user interface, users can interactively adjust image slices, contrast levels, and dataset parameters, and visualize EPSI grids overlaid on proton images.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
-- Interactive sliders for adjusting image slices and contrast.
-- Real-time EPSI grid overlay on proton images.
-- Dynamic grid position adjustment with control buttons.
-- Ability to toggle EPSI data display on/off.
-- Responsive design for various window sizes.
-- Export functionality to save the current view as a PNG image.
-- Access to an About page with additional information about the app and developers.
+## Available Scripts
 
-## Installation (Local)
-- Create a new folder with subfolders frontend, backend, and data. Install dependencies for React App in frontend and Flask in backend 
-- Clone the repository to access source code
+In the project directory, you can run:
 
-```bash
-git clone https://github.com/benjaminyoon/Epsi-App.git epsi-app
-```
+### `npm start`
 
-- Replace public and src in your frontend folder with src and public from github
-- Place EpsiGui.py into your backend folder
-- Place your data into your data folder
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Usage
-- Start the application locally (separate shell instance):
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-```bash
-cd <your-folder>/backend
-source .venv/bin/activate
-python EpsiGui.py
-```
+### `npm test`
 
-```bash
-cd <your-folder>/frontend
-npm start
-```
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- Navigate to http://localhost:3000 in your web browser to access the EPSI App.
+### `npm run build`
 
-## License
-This project is licensed under the MIT License - React (software)
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## About PIGI Lab
-PIGI Lab is a MRI technology research lab in the University of Pennsylvania Perelman School of Medicine dedicated to creating innovative solutions across various fields. Learn more at www.pigilab.com.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-## Author
-Benjamin Yoon, EPSI App lead developer, is a B.S.E. student at the University of Pennsylvania. For any questions or suggestions regarding the EPSI App, please contact us:
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-- Benjamin Yoon - yoonb2002@gmail.com
+### `npm run eject`
 
-2024 University of Pennsylvania Perelman School of Medicine, PIGI Lab. All rights reserved.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
