@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# EPSI App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
+EPSI App is a dynamic data visualization tool developed by Benjamin Yoon and Medcap Computing at the PIGI Lab (University of Pennsylvania Perelman School of Medicine), designed to facilitate the analysis and interpretation of EPSI (Echo Planar Spectroscopic Imaging) data. Through an intuitive user interface, users can interactively adjust image slices, contrast levels, and dataset parameters, and visualize EPSI grids overlaid on proton images.
 
-## Available Scripts
+## Features
+**Version 1.0.0** 
+- **Initial Release:** Standard application features.
+- - Interactive sliders for adjusting image slices and contrast.
+- - Real-time EPSI grid overlay on proton images.
 
-In the project directory, you can run:
+**Version 1.0.1**
+- **Responsive Design:** All dimenstions dynamically adjust based on screen resolution.
+- **Enhanced Contrast Control:** Expanded the range of contrast settings for better image visualization.
 
-### `npm start`
+**Version 1.1.0**
+- **Interactive Plot Shift Controls:** Introduced buttons and directional arrows to shift the overlay plot relative to the proton image, including a button to reset to the default position.
+- **EPSI Axis Management:** Added functionality to clear and recall the EPSI axis with grid retention; grid and image are displayed by default.
+- **Export Functionality:** Implemented a feature to save the current view as a PNG file.  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Version 1.1.1**
+- **Operational Enhancements:** Improve application functionality.
+- **About Page and Branding Updates:** Created an About page, updated the application's logo and title, and included copyright information for Benjamin Yoon, PIGI Lab/Medcap Computing.
+- **Data Management:** Enhanced capability to upload datasets for processing and visualization.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Version 1.2.0**
+- **UI Refinement:** Refined the user interface to enhance aesthetics and usability, focusing on intuitive design and enhanced user interation.
 
-### `npm test`
+## Installation (Local)
+- Create a new folder with subfolders frontend, backend, and data. Install dependencies for React App in frontend and Flask in backend 
+- Clone the repository to access source code
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone https://github.com/benjaminyoon/Epsi-App.git epsi-app
+```
 
-### `npm run build`
+- Replace public and src in your frontend folder with src and public from github
+- Place EpsiGui.py into your backend folder
+- Place your data into your data folder
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Usage
+- Start the application locally (separate shell instance):
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cd <your-folder>/backend
+source .venv/bin/activate
+python EpsiGui.py
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd <your-folder>/frontend
+npm start
+```
 
-### `npm run eject`
+- Navigate to http://localhost:3000 in your web browser to access the EPSI App.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## License
+This project is licensed under the MIT License - React (software)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## About PIGI Lab
+PIGI Lab is a MRI technology research lab in the University of Pennsylvania Perelman School of Medicine dedicated to creating innovative solutions across various fields. Learn more at www.pigilab.com.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Author
+Benjamin Yoon, EPSI App lead developer, is a B.S.E. student at the University of Pennsylvania. For any questions or suggestions regarding the EPSI App, please contact us:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Benjamin Yoon - yoonb2002@gmail.com
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2024 University of Pennsylvania Perelman School of Medicine, PIGI Lab. All rights reserved.
