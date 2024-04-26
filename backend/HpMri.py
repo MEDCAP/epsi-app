@@ -14,18 +14,22 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app)
-UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data"
+UPLOAD_FOLDER = (
+    # "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 EPSI App/epsi-app/data"
+    "/home/ubuntu/data_mouse_kidney"
 
+)
 # Path to the folder containing .dcm files
-folder_path = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data_mouse_kidney/s_2023041103/fsems_rat_liver_03.dmc/"
+folder_path = "/home/ubuntu/data_mouse_kidney/s_2023041103/fsems_rat_liver_03.dmc/"
 
 # Count the number of .dcm files
 dcm_files = [file for file in os.listdir(folder_path) if file.endswith(".dcm")]
 num_slider_values = len(dcm_files)
 info_epsi = {"pictures_to_read_write": 1, "proton": 60, "centric": 1}
 path_epsi = ""
-path_13c = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data_mouse_kidney/s_2023041103/epsi_16x12_13c_"
-path_fid = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data_mouse_kidney/s_2023041103/fsems_rat_liver_03"
+path_13c = "/home/ubuntu/data_mouse_kidney/s_2023041103/epsi_16x12_13c_"
+path_fid = "/home/ubuntu/data_mouse_kidney/s_2023041103/fsems_rat_liver_03"
+
 scale = True
 rows = 12
 columns = 16
@@ -443,4 +447,4 @@ def read_write_fid(file_path):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
