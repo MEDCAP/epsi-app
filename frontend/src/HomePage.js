@@ -1,14 +1,14 @@
 /**
  * HomePage.js
  *
- * The HomePage component serves as the central interface for the EPSI Visualization App.
+ * The HomePage component serves as the central interface for the HP MRI Web Application.
  * It provides functionalities such as displaying proton images, adjusting EPSI plots,
  * and offering navigation to the About page. This version introduces an updated GUI
  * with improved controls for enhanced data visualization and user interaction.
  *
- * Version 1.2.0: Introduces a refined GUI with new controls and layout adjustments.
+ * Version 1.2.0: Introduces a refined GUI with new controls and layout adjustments and official title: HP MRI Web Application.
  * Author: Benjamin Yoon
- * Date: 2024-04-12
+ * Date: 2024-04-16
  */
 
 import React, { useState, useEffect } from 'react';
@@ -64,7 +64,7 @@ function HomePage() {
     const formData = new FormData();
     fileList.forEach(file => formData.append('files', file));
 
-    const uploadEndpoint = 'http://epsi-server-elb-395920972.us-east-1.elb.amazonaws.com:5000/api/upload';
+    const uploadEndpoint = 'http://127.0.0.1:5000/api/upload';
     fetch(uploadEndpoint, { method: 'POST', body: formData })
       .then(response => response.json())
       .then(data => console.log(data))
@@ -83,7 +83,7 @@ function HomePage() {
    * @param {number} newContrastValue - The new value from the contrast slider.
    */
   const sendSliderValueToBackend = (newValue, newContrastValue) => {
-    fetch(`http://epsi-server-elb-395920972.us-east-1.elb.amazonaws.com:5000/api/get_proton_picture/${newValue}`, {
+    fetch(`http://127.0.0.1:5000/api/get_proton_picture/${newValue}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contrast: newContrastValue }),
     }).then(response => response.blob()).then(imageBlob => setImageURL(URL.createObjectURL(imageBlob)))
@@ -95,7 +95,7 @@ function HomePage() {
    * @param {number} newEpsiValue - The new value from the epsi plot slider.
    */
   const sendEpsiValueToBackend = (newEpsiValue) => {
-    fetch(`http://epsi-server-elb-395920972.us-east-1.elb.amazonaws.com:5000/api/get_epsi_data/${newEpsiValue}`, {
+    fetch(`http://127.0.0.1:5000/api/get_epsi_data/${newEpsiValue}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
     }).then(response => response.json()).then(data =>
       setEpsiData(data))
