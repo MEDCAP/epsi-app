@@ -64,7 +64,7 @@ function HomePage() {
     const formData = new FormData();
     fileList.forEach(file => formData.append('files', file));
 
-    const uploadEndpoint = 'http://127.0.0.1:5000/api/upload';
+    const uploadEndpoint = 'http://epsi-server-elb-395920972.us-east-1.elb.amazonaws.com:5000/api/upload';
     fetch(uploadEndpoint, { method: 'POST', body: formData })
       .then(response => response.json())
       .then(data => console.log(data))
@@ -83,7 +83,7 @@ function HomePage() {
    * @param {number} newContrastValue - The new value from the contrast slider.
    */
   const sendSliderValueToBackend = (newValue, newContrastValue) => {
-    fetch(`http://127.0.0.1:5000/api/get_proton_picture/${newValue}`, {
+    fetch(`http://epsi-server-elb-395920972.us-east-1.elb.amazonaws.com:5000/api/get_proton_picture/${newValue}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contrast: newContrastValue }),
     }).then(response => response.blob()).then(imageBlob => setImageURL(URL.createObjectURL(imageBlob)))
@@ -95,7 +95,7 @@ function HomePage() {
    * @param {number} newEpsiValue - The new value from the epsi plot slider.
    */
   const sendEpsiValueToBackend = (newEpsiValue) => {
-    fetch(`http://127.0.0.1:5000/api/get_epsi_data/${newEpsiValue}`, {
+    fetch(`http://epsi-server-elb-395920972.us-east-1.elb.amazonaws.com:5000/api/get_epsi_data/${newEpsiValue}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
     }).then(response => response.json()).then(data =>
       setEpsiData(data))
