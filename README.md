@@ -30,27 +30,45 @@ The Hyperpolarized (HP) Magnetic Resonance Imaging (MRI) Web Application, develo
 - **Threshold Adjustment:** Implemented a slider to dynamically adjust the minimum peak value of the EPSI data visualization.
 
 ## Installation (Local)
-Create a directory structure with subfolders for frontend, backend, and data. Install necessary dependencies for a React application in the frontend and Flask in the backend.
+You can download the HP MRI Web Application locally by running the following commands in your terminal (one time only). First, we install necessary dependencies for a React application in the frontend and Flask in the backend. 
 
 ```bash
 git clone https://github.com/benjaminyoon/hpmri-benjaminyoon.git hpmri-local
 ```
-
-- Replace public and src in your frontend folder with src and public from github
-- Place HpMri.py into your backend folder
-- Place your data into your data folder
-
+Here create and activate our virtual environment for the backend.
+```bash
+cd backend
+python -m venv .venv
+```
+Run the first command if you're on MacOS and the second command if you're on Windows
+```bash
+source .venv/bin/activate
+.venv\Scripts\activate
+```
+Finally run the following command
+```bash
+pip install -r requirements.txt
+```
+Now we install the node modules for our frontend
+```bash
+cd ..
+cd frontend
+npm install react-app-rewired --save-dev
+npm uninstall -g react-app-rewired
+npm install
+```
 ## Usage
-- Start the application locally (separate shell instance):
+- Start the application locally by running the following commands (everytime you want to start the application):
 
 ```bash
-cd <your-folder>/backend
-source .venv/bin/activate
+cd backend
+source .venv/bin/activate # on MacOS, if on Windows run: .venv\Scripts\activate
 python HpMri.py
 ```
-
+Now open a separate terminal instance (window) and run the following commands
 ```bash
-cd <your-folder>/frontend
+cd hpmri-local
+cd frontend
 npm start
 ```
 
