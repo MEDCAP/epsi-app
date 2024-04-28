@@ -434,4 +434,4 @@ def read_write_fid(file_path):
         )
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    APP.run(debug=True, host='0.0.0.0')
