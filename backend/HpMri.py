@@ -13,10 +13,10 @@ import io
 
 #/home/ubuntu/data_mouse_kidney/s_2023041103
 # Constants
-UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data"
-DICOM_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data/s_2023041103/fsems_rat_liver_03.dmc/"
-EPSI_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data/s_2023041103/epsi_16x12_13c_"
-FID_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-benjaminyoon/data/s_2023041103/fsems_rat_liver_03"
+UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data"
+DICOM_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03.dmc/"
+EPSI_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data/s_2023041103/epsi_16x12_13c_"
+FID_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03"
 EPSI_INFO = {"pictures_to_read_write": 1, "proton": 60, "centric": 1}
 PATH_EPSI = ""
 APP = Flask(__name__)
