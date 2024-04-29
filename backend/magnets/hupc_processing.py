@@ -2,28 +2,20 @@ import os
 import struct
 import traceback
 import numpy as np
-from flask import Flask, jsonify, request, send_file
-from flask_cors import CORS
+from flask import jsonify, request, send_file
 from PIL import Image
 import cv2
 import pydicom
 from scipy.fft import fftn
-from werkzeug.utils import secure_filename
 import io
 
-#/home/ubuntu/data_mouse_kidney/s_2023041103
 # Constants
-UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data"
 DICOM_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03.dmc/"
 EPSI_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data/s_2023041103/epsi_16x12_13c_"
 FID_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03"
 EPSI_INFO = {"pictures_to_read_write": 1, "proton": 60, "centric": 1}
 PATH_EPSI = ""
-APP = Flask(__name__)
-CORS(APP)
-DICOM_FILES = [
-    file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")
-]  # Count the number of .dcm files
+DICOM_FILES = [file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")]
 NUM_SLIDER_VALUES = len(DICOM_FILES)
 SCALE = True
 ROWS = 12
@@ -31,40 +23,32 @@ COLUMNS = 16
 MOVING_AVERAGE_WINDOW = 1
 
 
-@APP.route("/api/get_proton_picture/<int:slider_value>", methods=["POST"])
-def get_proton_picture(slider_value: int):
+def process_proton_picture(slider_value: int):
     """
-    Handle image retrieval based on slider_value by loading the corresponding DICOM file
-    and converting it to an image. Return the image data as a response.
+    Retrieves an image based on the slider value from DICOM files, applying contrast adjustment and returning a PNG.
 
     Args:
-    slider_value (int): Slider value to determine which image to load.
+        slider_value (int): The index to determine which image to load.
 
     Returns:
-    Flask Response: Image file or error JSON.
-
-    @author Benjamin (Ben) Yoon
-    @date Fri Nov 3 2023
-    @version 1.0.0
+        Flask Response: Image file as PNG or an error message in JSON format.
     """
     try:
         filename = f"slice{slider_value:03d}image001echo001.dcm"
         dicom_path = os.path.join(DICOM_FOLDER, filename)
 
-        # Check if the file exists
         if not os.path.exists(dicom_path):
             return jsonify({"error": "DICOM file not found"}), 404
 
-        # Read the DICOM file
         dcm = pydicom.dcmread(dicom_path)
         slice_image = dcm.pixel_array
         slice_image[slice_image < 5] = 0
+
         normalized_image = (slice_image - np.min(slice_image)) / (
             np.max(slice_image) - np.min(slice_image)
         )
         normalized_image[normalized_image < 0.05] = 0.0
 
-        # Get the contrast value from the request data
         request_data = request.get_json()
         contrast = request_data.get("contrast", 1)
         clahe = cv2.createCLAHE(clipLimit=contrast, tileGridSize=(8, 8))
@@ -73,7 +57,6 @@ def get_proton_picture(slider_value: int):
         rescaled_image = clahe_image / 255.0
         rescaled_image[rescaled_image < 0.05] = 0.0
 
-        # Create a buffer to hold the image data
         buffer = io.BytesIO()
         pil_image = Image.fromarray((rescaled_image * 255).astype(np.uint8))
         pil_image.save(buffer, format="PNG")
@@ -85,54 +68,35 @@ def get_proton_picture(slider_value: int):
         return jsonify({"error": str(e)}), 500
 
 
-def sanitize_data(data):
-    if isinstance(data, list):
-        return [sanitize_data(item) for item in data]
-    elif isinstance(data, dict):
-        return {key: sanitize_data(value) for key, value in data.items()}
-    elif isinstance(data, float) and np.isnan(data):
-        return None  # Replace NaN with None
-    return data
-
-
-@APP.route("/api/get_epsi_data/<int:epsi_value>", methods=["POST"])
-def get_epsi_data(epsi_value):
+def process_hp_mri_data(epsi_value, threshold):
     """
-    Retrieves EPSI data for a given EPSI value from the backend, applying a dynamic threshold for data filtering.
-    This function is designed to handle requests for EPSI data visualization, enhancing user interaction by providing
-    adjustable data filtering based on a threshold value passed as a query parameter.
+    Retrieves and processes EPSI data based on given parameters, returning sanitized data for visualization.
 
     Args:
-    epsi_value (int): The EPSI slider value from the frontend used to determine which data to fetch.
+        epsi_value (int): EPSI slider value to fetch the corresponding data.
+        threshold (float): Threshold value for filtering the data.
 
     Returns:
-    json: A JSON object containing the EPSI plot data or an error message.
-
-    Author:
-    Benjamin Yoon
-
-    Date: Fri Apr 26 2024
-    Version 1.2.1
-
+        json: Sanitized EPSI data or error message in JSON format.
     """
-    global lro_fid, lpe_fid, lro_epsi, lpe_epsi, x_epsi, epsi, spectral_data, plot_shift
-    threshold = request.args.get("threshold", default=0.2, type=float)
     try:
+        global lro_fid, lpe_fid, lro_epsi, lpe_epsi, x_epsi, epsi, spectral_data, plot_shift
         read_epsi_plot(epsi_value, threshold)
+
         epsi_sanitized = np.nan_to_num(epsi, nan=-1).tolist()
         spectral_data_sanitized = np.nan_to_num(spectral_data, nan=-1).tolist()
         plot_shift = [-0.3, -0.4]
 
         data_to_send = {
-            "xEpsi": x_epsi.tolist(),
-            "epsi": epsi_sanitized,
+            "xValues": x_epsi.tolist(),
+            "data": epsi_sanitized,
             "columns": COLUMNS,
             "spectralData": spectral_data_sanitized,
             "rows": ROWS,
-            "lroFid": lro_fid,
-            "lpeFid": lpe_fid,
-            "lroEpsi": lro_epsi,
-            "lpeEpsi": lpe_epsi,
+            "longitudinalScale": lro_fid,
+            "perpendicularScale": lpe_fid,
+            "longitudinalMeasurement": lro_epsi,
+            "perpendicularMeasurement": lpe_epsi,
             "plotShift": plot_shift,
         }
         return jsonify(data_to_send)
@@ -141,49 +105,22 @@ def get_epsi_data(epsi_value):
         return jsonify({"error": str(e)}), 500
 
 
-@APP.route("/upload", methods=["POST"])
-def file_upload():
-    try:
-        uploaded_files = request.files.getlist("files")
-        for file in uploaded_files:
-            if file:
-                filename = secure_filename(file.filename)
-                save_path = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(save_path)
-        return jsonify({"status": "success"}), 200
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
-
-
 def read_epsi_plot(epsi_value, threshold):
     """
-    Processes and sets EPSI data based on configuration and current EPSI value.
-    Filters spectral data using a specified threshold to manage data visibility based on intensity.
+    Processes EPSI data based on the configuration and value provided, filtering out low-intensity data.
 
     Args:
-    epsi_value (int): The EPSI slider value indicating the data slice to process.
-    threshold (float): The minimum intensity threshold for data visibility.
+        epsi_value (int): The EPSI value used to determine which data slice to process.
+        threshold (float): Intensity threshold for filtering data.
 
     Modifies:
-    Global variables related to processed spectral data and EPSI display parameters.
-
-    Author:
-    Benjamin Yoon
-
-    Date:
-    Fri Apr 26 2024
-
-    Version:
-    1.2.1
+        Updates global variables for spectral data and EPSI display parameters.
     """
     global lro_fid, lpe_fid, lro_epsi, lpe_epsi, x_epsi, epsi, spectral_data
     proton_quarter = EPSI_INFO["proton"] / 4
     path_epsi = f"{EPSI_FOLDER}{epsi_value:02d}"
     spectral_data = read_write_spectral_data(EPSI_INFO, path_epsi, proton_quarter)
     spectral_data = np.flip(np.flip(spectral_data, 0), 1)
-
-    # if self.picture_information:
-    #    spectral_data = self.class_spectral_data_instance.correct_epsi_plot(self, spectral_data)
 
     if SCALE:
         maximum_spectral_data_value = np.max(spectral_data)
@@ -217,7 +154,7 @@ def read_epsi_plot(epsi_value, threshold):
     )
     epsi[~np.isnan(epsi)] -= 1
 
-    # Adjust subplot position
+    # Update subplot positioning
     lro_fid = read_write_procpar("lro", FID_FOLDER)[0] * 10
     lpe_fid = read_write_procpar("lpe 1", FID_FOLDER)[0] * 10
     lro_epsi = read_write_procpar("lro", path_epsi)[0] * 10
@@ -234,9 +171,9 @@ def read_write_spectral_data(epsi_tmp, file_path, proton_quarter):
     :return: Processed spectral data as a complex numpy array.
     :rtype: ndarray
 
-    @author: Benjamin Yoon
-    @date: Fri Nov 3 2023
-    @version: 1.0.0
+    Author: Benjamin Yoon
+    Date: 2023-11-03
+    Version: 1.0.0
     """
     global lro_fid, lpe_fid, lro_epsi, lpe_epsi, x_epsi, epsi, spectral_data
     ne = read_write_procpar("ne", file_path)
@@ -314,9 +251,9 @@ def read_write_procpar(read_line, file_path):
     :return: A list of values associated with the given parameter name.
     :rtype: list of float
 
-    @author: Benjamin Yoon
-    @date: Fri Nov 3 2023
-    @version: 1.0.0
+    Author: Benjamin Yoon
+    Date: 2023-11-03
+    Version: 1.0.0
     """
     global lro_fid, lpe_fid, lro_epsi, lpe_epsi, x_epsi, epsi, spectral_data
     file_path = file_path + ".fid"
@@ -338,9 +275,9 @@ def read_write_fid(file_path):
     :return: A tuple containing various data elements.
     :rtype: tuple
 
-    @author: Benjamin Yoon
-    @date: Fri Nov 3 2023
-    @version: 1.0.0
+    Author: Benjamin Yoon
+    Date: 2023-11-03
+    Version: 1.0.0
     """
     global lro_fid, lpe_fid, lro_epsi, lpe_epsi, x_epsi, epsi, spectral_data
     path = f"{file_path}.fid/fid"
@@ -432,6 +369,3 @@ def read_write_fid(file_path):
             number_of_traces,
             header_information,
         )
-
-if __name__ == "__main__":
-    APP.run(debug=True, host='0.0.0.0')

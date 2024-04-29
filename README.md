@@ -1,88 +1,86 @@
 # HP MRI Web Application
 
 ## Introduction
-The Hyperpolarized (HP) Magnetic Resonance Imaging (MRI) Web Application, developed by Benjamin Yoon and Medcap Computing at PIGI Lab (University of Pennsylvania Perelman School of Medicine), is a sophisticated data visualization tool designed for the analysis and interpretation of EPSI (Echo Planar Spectroscopic Imaging) data. This application offers an intuitive user interface allowing users to interactively adjust image slices, contrast levels, and dataset parameters, and visualize EPSI grids overlaid on proton images.
+The Hyperpolarized (HP) Magnetic Resonance Imaging (MRI) Web Application, spearheaded by Benjamin Yoon and Medcap Computing at the PIGI Lab (University of Pennsylvania Perelman School of Medicine), serves as a sophisticated tool for the visualization and analysis of HP MRI data, including Echo Planar Spectroscopic Imaging (EPSI). This application features an intuitive user interface that allows users to interactively adjust image slices, contrast levels, and dataset parameters, and visualize HP MRI data grids overlaid on proton images.
 
 ## Features
 ### Version 1.0.0
-- **Initial Release:** Features interactive sliders for adjusting image slices and contrast and real-time EPSI grid overlay on proton images.
+- **Initial Release:** Interactive sliders for adjusting image slices and contrast, alongside real-time HP MRI data grid overlays on proton images.
 
 ### Version 1.0.1
-- **Responsive Design:** Automatically adjusts dimensions based on screen resolution.
-- **Enhanced Contrast Control:** Expanded range of contrast settings for improved image visualization.
+- **Responsive Design:** Dimensions automatically adjust based on screen resolution.
+- **Enhanced Contrast Control:** Expanded range of contrast settings enhances image visualization.
 
 ### Version 1.1.0
-- **Interactive Plot Shift Controls:** Introduces buttons and directional arrows to shift the overlay plot relative to the proton image, including a reset button for default positioning.
-- **EPSI Axis Management:** Added functionality to manage EPSI axis with grid retention; displays grid and image by default.
-- **Export Functionality:** Feature to save the current view as a PNG file.
+- **Interactive Plot Shift Controls:** Introduces buttons and directional arrows for shifting the overlay plot relative to the proton image, including a reset button to default positioning.
+- **HP MRI Data Axis Management:** Adds functionality for managing the HP MRI Data axis with grid retention; grid and image displayed by default.
+- **Export Functionality:** Enables saving the current view as a PNG file.
 
 ### Version 1.1.1
-- **Operational Enhancements:** Improved application functionality.
-- **About Page and Branding Updates:** Introduced an About page, updated the application's logo and title, and included copyright information for Benjamin Yoon, PIGI Lab/Medcap Computing.
-- **Data Management:** Enhanced dataset upload capabilities for processing and visualization.
+- **Operational Enhancements:** Improves application functionality.
+- **About Page and Branding Updates:** Adds an About page, updates the application's logo and title, and includes copyright information for Benjamin Yoon and PIGI Lab/Medcap Computing.
+- **Data Management:** Enhances dataset upload capabilities for processing and visualization.
 
 ### Version 1.2.0
-- **UI Refinement:** Enhanced the user interface to improve aesthetics and usability, focusing on intuitive design and user interaction.
-- **Official Title:** Named as Hyperpolarized (HP) Magnetic Resonance (MRI) Web Application.
+- **UI Refinement:** Enhances the user interface to improve aesthetics and usability, focusing on intuitive design and user interaction.
+- **Official Title:** Named the Hyperpolarized (HP) Magnetic Resonance (MRI) Web Application.
 
 ### Version 1.2.1
-- **Voxel Selection Tool:** Introduced functionality to select and highlight individual voxels within the EPSI grid for detailed analysis.
-- **Threshold Adjustment:** Implemented a slider to dynamically adjust the minimum peak value of the EPSI data visualization.
+- **Voxel Selection Tool:** Introduces the ability to select and highlight individual voxels within the HP MRI Data grid for detailed analysis.
+- **Threshold Adjustment:** Implements a slider to dynamically adjust the minimum peak value of the HP MRI data visualization.
 
 ## Installation (Local)
-You can download the HP MRI Web Application locally by running the following commands in your terminal (one time only). First, we install necessary dependencies for a React application in the frontend and Flask in the backend. 
+To install the HP MRI Web Application locally, execute the following commands in your terminal:
 
 ```bash
+# Clone the repository
 git clone https://github.com/benjaminyoon/hpmri-benjaminyoon.git hpmri-local
-```
-Here create and activate our virtual environment for the backend.
-```bash
-cd backend
+
+# Navigate to the backend directory
+cd hpmri-local/backend
+
+# Create and activate the virtual environment
 python -m venv .venv
-```
-Run the first command if you're on MacOS and the second command if you're on Windows
-```bash
+# On MacOS
 source .venv/bin/activate
+# On Windows
 .venv\Scripts\activate
-```
-Finally run the following command
-```bash
+
+# Install dependencies
 pip install -r requirements.txt
-```
-Now we install the node modules for our frontend
-```bash
-cd ..
-cd frontend
-npm install react-app-rewired --save-dev
-npm uninstall -g react-app-rewired
+
+# Navigate to the frontend directory
+cd ../frontend
+
+# Install frontend dependencies
 npm install
 ```
+
 ## Usage
-- Start the application locally by running the following commands (everytime you want to start the application):
+To start the application locally, follow these steps each time you wish to run it:
 
 ```bash
+# Start the backend server
 cd backend
-source .venv/bin/activate # on MacOS, if on Windows run: .venv\Scripts\activate
-python HpMri.py
-```
-Now open a separate terminal instance (window) and run the following commands
-```bash
-cd hpmri-local
-cd frontend
+source .venv/bin/activate # On MacOS, or on Windows: .venv\Scripts\activate
+python hpmri_app.py
+
+# In a separate terminal, start the frontend
+cd ../frontend
 npm start
 ```
 
-- Navigate to http://localhost:3000 in your web browser to access the HP MRI App.
+Navigate to http://localhost:3000 in your web browser to access the HP MRI Web Application.
 
 ## License
 This project is licensed under the MIT License - React (software)
 
 ## About PIGI Lab
-PIGI Lab is a MRI technology research lab in the University of Pennsylvania Perelman School of Medicine dedicated to creating innovative solutions across various fields. Learn more at www.pigilab.com.
+PIGI Lab, located at the University of Pennsylvania Perelman School of Medicine, is dedicated to pioneering MRI technology and crafting innovative solutions across various disciplines. Discover more at www.pigilab.com.
 
 ## Author
-Benjamin Yoon, HP MRI Web Application lead developer, is a B.S.E. student at the University of Pennsylvania. For any questions or suggestions regarding the HP MRI Web App, please contact us:
+Benjamin Yoon, the lead developer of the HP MRI Web Application and a B.S.E. student at the University of Pennsylvania, oversees the development and enhancements of the application. For inquiries or suggestions, please contact:
 
-- Benjamin Yoon - yoonb2002@gmail.com
+- **Email:** yoonb2002@gmail.com
 
-2024 University of Pennsylvania Perelman School of Medicine, PIGI Lab. All rights reserved.
+© 2024 University of Pennsylvania Perelman School of Medicine, PIGI Lab. All rights reserved.
