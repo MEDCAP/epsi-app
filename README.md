@@ -34,10 +34,11 @@ To install the HP MRI Web Application locally, execute the following commands in
 
 ```bash
 # Clone the repository
-git clone https://github.com/benjaminyoon/hpmri-benjaminyoon.git hpmri-local
+git clone https://github.com/benjaminyoon/hp-mri-web-application-benjaminyoon.git hp-mri-web-app-local
 
 # Navigate to the backend directory
-cd hpmri-local/backend
+cd hp-mri-web-app-local
+cd backend
 
 # Create and activate the virtual environment
 python -m venv .venv
@@ -61,12 +62,14 @@ To start the application locally, follow these steps each time you wish to run i
 
 ```bash
 # Start the backend server
+cd hp-mri-web-app-local
 cd backend
 source .venv/bin/activate # On MacOS, or on Windows: .venv\Scripts\activate
-python hpmri_app.py
+python hp_mri_app.py
 
 # In a separate terminal, start the frontend
-cd ../frontend
+cd hp-mri-web-app-local
+cd frontend
 npm start
 ```
 
