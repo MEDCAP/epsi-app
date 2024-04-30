@@ -73,7 +73,7 @@ cd frontend
 npm start
 ```
 
-Navigate to http://localhost:3000 in your web browser to access the HP MRI Web Application.
+Make sure to change the paths to your data accordingly at the beginning of each backend file. Navigate to http://localhost:3000 in your web browser to access the HP MRI Web Application. 
 
 ## License
 This project is licensed under the MIT License - React (software)
