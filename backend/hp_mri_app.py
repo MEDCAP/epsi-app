@@ -3,9 +3,10 @@ from magnets import hupc_processing, clinical_processing, mr_solutions_processin
 import os
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
+import cv2 
 
 # Constants
-UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hpmri-yoonbenjamin/data"
+UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data"
 app = Flask(__name__)
 CORS(app)
 
