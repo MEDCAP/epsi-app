@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 
 function HomePage() {
   const [imageUrl, setImageUrl] = useState('');
+  const [numSliderValues, setNumSliderValues] = useState(0);
   const [hpMriData, setHpMriData] = useState({
     xValues: [], data: [], columns: 0, spectralData: [], rows: 0,
     longitudinalScale: 0, perpendicularScale: 0, longitudinalMeasurement: 0, perpendicularMeasurement: 0, plotShift: [0, 0]
@@ -27,7 +28,7 @@ function HomePage() {
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const [datasetIndex, setDatasetIndex] = useState(3);
+  const [datasetIndex, setDatasetIndex] = useState(1);
   const [selecting, setSelecting] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState('A');
   const [groupA, setGroupA] = useState([]);
@@ -42,6 +43,7 @@ function HomePage() {
 
   // Effect hook for initial data fetch and window resize event listener.
   useEffect(() => {
+    fetchNumSliderValues();
     fetchInitialData();
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
@@ -135,6 +137,15 @@ function HomePage() {
       .catch(error => console.error('Error fetching proton image:', error));
   };
 
+  const fetchNumSliderValues = () => {
+    fetch('http://127.0.0.1:5000/api/get_num_slider_values')
+      .then(response => response.json())
+      .then(data => {
+        setNumSliderValues(data.numSliderValues);
+      })
+      .catch(error => console.error('Failed to fetch number of slider values:', error));
+  };
+
   // Fetches and updates the HP MRI data plot based on slider input.
   const sendDatasetToBackend = (newDatasetIndex) => {
     const url = `http://127.0.0.1:5000/api/get_hp_mri_data/${newDatasetIndex}?threshold=${threshold}&magnetType=${magnetType}`;
@@ -170,6 +181,7 @@ function HomePage() {
       </div>
       <ControlPanel
         onSliderChange={handleSliderChange}
+        numSliderValues={numSliderValues}
         onContrastChange={handleContrastChange}
         onDatasetChange={handleDatasetChange}
         datasetIndex={datasetIndex}

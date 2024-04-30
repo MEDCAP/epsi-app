@@ -3,7 +3,7 @@ from magnets import hupc_processing, clinical_processing, mr_solutions_processin
 import os
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-import cv2 
+import cv2
 
 # Constants
 UPLOAD_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data"
@@ -30,15 +30,39 @@ def get_proton_picture(slider_value: int):
     magnet_type = data.get("magnetType", "HUPC")  # Default to HUPC if not specified
 
     if magnet_type == "HUPC":
-        result = hupc_processing.process_proton_picture(slider_value)
+        result = hupc_processing.process_proton_picture(slider_value, data)
     elif magnet_type == "Clinical":
-        result = clinical_processing.process_proton_picture(slider_value)
+        result = clinical_processing.process_proton_picture(slider_value, data)
     elif magnet_type == "MR Solutions":
-        result = mr_solutions_processing.process_proton_picture(slider_value)
+        result = mr_solutions_processing.process_proton_picture(slider_value, data)
     else:
         return jsonify({"error": "Invalid magnet type"}), 400
 
     return result
+
+
+@app.route("/api/get_num_slider_values", methods=["GET"])
+def fetch_num_slider_values():
+    """
+    API endpoint to fetch the number of slider values.
+
+    Returns:
+        JSON: Contains the number of slider values.
+    """
+    magnet_type = request.args.get(
+        "magnetType", "HUPC"
+    )  # Default to HUPC if not specified
+    
+    if magnet_type == "HUPC":
+        num_values = hupc_processing.get_num_slider_values()
+    elif magnet_type == "Clinical":
+        num_values = 0
+    elif magnet_type == "MR Solutions":
+        num_values = mr_solutions_processing.get_num_slider_values()
+    else:
+        return jsonify({"error": "Invalid magnet type"}), 400
+    
+    return jsonify({"numSliderValues": num_values})
 
 
 @app.route("/api/get_hp_mri_data/<int:hp_mri_dataset>", methods=["POST"])

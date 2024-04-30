@@ -2,7 +2,7 @@ import os
 import struct
 import traceback
 import numpy as np
-from flask import jsonify, request, send_file
+from flask import jsonify, send_file
 from PIL import Image
 import cv2
 import pydicom
@@ -15,20 +15,19 @@ EPSI_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI 
 FID_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03"
 EPSI_INFO = {"pictures_to_read_write": 1, "proton": 60, "centric": 1}
 PATH_EPSI = ""
-DICOM_FILES = [file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")]
-NUM_SLIDER_VALUES = len(DICOM_FILES)
 SCALE = True
 ROWS = 12
 COLUMNS = 16
 MOVING_AVERAGE_WINDOW = 1
 
 
-def process_proton_picture(slider_value: int):
+def process_proton_picture(slider_value: int, data):
     """
     Retrieves an image based on the slider value from DICOM files, applying contrast adjustment and returning a PNG.
 
     Args:
         slider_value (int): The index to determine which image to load.
+        data (dict): Additional data necessary for processing the image, such as contrast settings or other parameters.
 
     Returns:
         Flask Response: Image file as PNG or an error message in JSON format.
@@ -49,8 +48,7 @@ def process_proton_picture(slider_value: int):
         )
         normalized_image[normalized_image < 0.05] = 0.0
 
-        request_data = request.get_json()
-        contrast = request_data.get("contrast", 1)
+        contrast = data.get("contrast", 1)
         clahe = cv2.createCLAHE(clipLimit=contrast, tileGridSize=(8, 8))
         clahe_image = clahe.apply(np.uint8(normalized_image * 255))
         clahe_image[clahe_image < 5] = 0
@@ -66,6 +64,18 @@ def process_proton_picture(slider_value: int):
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+
+def get_num_slider_values():
+    """
+    Calculate the number of slider values based on available datasets or images.
+
+    Returns:
+        int: The total number of slider values (datasets or images).
+    """
+    dicom_files = [file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")]
+    num_slider_values = len(dicom_files)
+    return num_slider_values
 
 
 def process_hp_mri_data(epsi_value, threshold):

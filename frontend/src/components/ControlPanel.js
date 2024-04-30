@@ -14,15 +14,17 @@ import React, { useState, useEffect } from 'react';
 /**
  * Renders a control panel with sliders to adjust image slice, contrast, and dataset parameters.
  * Changes are propagated to the parent component to update the main visualization.
+ * This component includes three sliders that control the image slice, contrast level, and dataset selection.
  *
- * @param {function} onSliderChange Callback to handle changes in the image slice slider.
- * @param {function} onContrastChange Callback to handle changes in the contrast slider.
- * @param {function} onDatasetChange Callback to handle changes in the dataset slider.
+ * @param {function} onSliderChange Callback function triggered when the image slice slider value changes.
+ * @param {function} onContrastChange Callback function triggered when the contrast slider value changes.
+ * @param {function} onDatasetChange Callback function triggered when the dataset slider value changes.
+ * @param {number} numSliderValues The total number of slider values available for dataset selection.
  * @param {number} datasetIndex The current index of the selected dataset.
- * @returns {JSX.Element} The rendered component.
+ * @returns {JSX.Element} The rendered component that includes sliders and their corresponding labels.
  */
-function ControlPanel({ onSliderChange, onContrastChange, onDatasetChange, datasetIndex }) {
-  const [sliderValue, setSliderValue] = useState(3);
+function ControlPanel({ onSliderChange, numSliderValues, onContrastChange, onDatasetChange, datasetIndex }) {
+  const [sliderValue, setSliderValue] = useState(1);
   const [contrastValue, setContrastValue] = useState(1);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ function ControlPanel({ onSliderChange, onContrastChange, onDatasetChange, datas
         <input
           type="range"
           min="1"
-          max="20"
+          max={numSliderValues}
           value={sliderValue}
           onChange={handleImageSliceChange}
           className="image-slice-slider"

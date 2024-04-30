@@ -28,13 +28,14 @@ import os
 
 
 # Example of function definition
-def process_proton_picture(slider_value):
+def process_proton_picture(slider_value, data):
     """
     Retrieves a proton image from clinical MRI data based on a slider value.
     Adjusts image processing to fit clinical standards and data specifications.
 
     Args:
         slider_value (int): The index to determine which image to load.
+        data (dict): Additional data necessary for processing the image, such as contrast settings or other parameters.
 
     Returns:
         Flask Response: Image file as PNG or an error message in JSON format.
