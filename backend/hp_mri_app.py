@@ -23,7 +23,7 @@ def get_proton_picture(slider_value: int):
         Flask Response: Either the image file or a JSON object indicating an error.
 
     Author: Benjamin Yoon
-    Date: 2024-04-29
+    Date: 2024-04-30
     Version: 1.2.2
     """
     data = request.get_json()
@@ -77,7 +77,7 @@ def get_hp_mri_data(hp_mri_dataset):
         json: JSON containing MRI data or an error message.
 
     Author: Benjamin Yoon
-    Date: 2024-04-29
+    Date: 2024-04-30
     Version: 1.2.2
     """
     threshold = request.args.get("threshold", default=0.2, type=float)

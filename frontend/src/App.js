@@ -5,7 +5,7 @@
  * Previous functionalities included navigation setup, app theming, and AWS deployment.
  *
  * @author Benjamin Yoon
- * @date 2024-04-29
+ * @date 2024-04-30
  * @version 1.2.2
  */
 
