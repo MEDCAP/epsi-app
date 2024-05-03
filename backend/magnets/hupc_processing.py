@@ -12,6 +12,7 @@ import io
 # Constants
 DICOM_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03.dmc/"
 EPSI_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/s_2023041103/epsi_16x12_13c_"
+DATASET_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/s_2023041103/"
 FID_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/s_2023041103/fsems_rat_liver_03"
 EPSI_INFO = {"pictures_to_read_write": 1, "proton": 60, "centric": 1}
 PATH_EPSI = ""
@@ -113,6 +114,30 @@ def process_hp_mri_data(epsi_value, threshold):
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
+
+def count_datasets():
+    """
+    Counts the number of dataset folders within a specified EPSI folder.
+    Folder names follow the format: 'epsi_16x12_13c_xx.fid', where 'xx' is the folder number.
+
+    Returns:
+    int: Number of dataset folders.
+    """
+    # Initialize the count of datasets
+    dataset_count = 0
+
+    # List all entries in the directory given by 'epsi_folder'
+    for entry in os.listdir(DATASET_FOLDER):
+        # Check if the entry is a directory and matches the expected pattern
+        if (
+            os.path.isdir(os.path.join(DATASET_FOLDER, entry))
+            and entry.startswith("epsi_16x12_13c_")
+            and entry.endswith(".fid")
+        ):
+            dataset_count += 1
+
+    return dataset_count
 
 
 def read_epsi_plot(epsi_value, threshold):

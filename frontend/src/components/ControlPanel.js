@@ -21,9 +21,10 @@ import React, { useState, useEffect } from 'react';
  * @param {function} onDatasetChange Callback function triggered when the dataset slider value changes.
  * @param {number} numSliderValues The total number of slider values available for dataset selection.
  * @param {number} datasetIndex The current index of the selected dataset.
+ * @param {number} numDatasets The total number of datasets available for selection.
  * @returns {JSX.Element} The rendered component that includes sliders and their corresponding labels.
  */
-function ControlPanel({ onSliderChange, numSliderValues, onContrastChange, onDatasetChange, datasetIndex }) {
+function ControlPanel({ onSliderChange, numSliderValues, onContrastChange, onDatasetChange, datasetIndex, numDatasets }) {
   const [sliderValue, setSliderValue] = useState(1);
   const [contrastValue, setContrastValue] = useState(1);
 
@@ -118,7 +119,7 @@ function ControlPanel({ onSliderChange, numSliderValues, onContrastChange, onDat
           <input
             type="range"
             min="0"
-            max={17}
+            max={numDatasets}
             value={datasetIndex}
             onChange={handleDatasetSelection}
             className="vertical-slider"

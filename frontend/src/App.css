@@ -62,8 +62,10 @@
 }
 
 /* Positioning styles for image and plot within their container */
-.proton-image,
-.plot-container {
+.proton-image-hupc,
+.proton-image-mr-solutions,
+.plot-container-hupc,
+.plot-container-mr-solutions {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -71,17 +73,30 @@
   z-index: 1;
 }
 
-.proton-image {
+.proton-image-hupc {
   width: 40vw;
   height: auto;
   /* maintain aspect ratio */
 }
 
-.plot-container {
+.proton-image-mr-solutions {
+  width: 40vw;
+  height: auto;
+  /* maintain aspect ratio */
+}
+
+.plot-container-hupc {
   width: 53.5vw;
   height: 40.125vw;
   z-index: 2;
-  transform: translate(-72.35%, -71%);
+  transform: translate(-94.75%, -90%);
+}
+
+.plot-container-mr-solutions {
+  width: 53.5vw;
+  height: 40.125vw;
+  z-index: 2;
+  transform: translate(-94.75%, -90%);
 }
 
 /* Styles for various buttons and button containers */

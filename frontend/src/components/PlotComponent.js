@@ -15,7 +15,7 @@ import Plotly from 'plotly.js';
  * Renders dynamic HP MRI data plots using Plotly.js.
  * @param {Object} props Component properties for configuring the plot.
  */
-function PlotComponent({ xValues, data, columns, spectralData, rows, longitudinalScale, perpendicularScale, longitudinalMeasurement, perpendicularMeasurement, plotShift, windowSize, showHpMriData }) {
+function PlotComponent({ xValues, data, columns, spectralData, rows, longitudinalScale, perpendicularScale, longitudinalMeasurement, perpendicularMeasurement, plotShift, windowSize, showHpMriData, magnetType }) {
     const plotContainerRef = useRef(null);
 
     // Effect hook to redraw plot when dependencies change.
@@ -41,7 +41,7 @@ function PlotComponent({ xValues, data, columns, spectralData, rows, longitudina
     };
 
     return (
-        <div className="plot-container" style={{ width: '100%', height: '100%' }}>
+        <div className={`plot-container-${magnetType.toLowerCase().replace(" ", "-")}`} style={{ width: '100%', height: '100%' }}>
             <div ref={plotContainerRef} style={{ width: '100%', height: '100%' }}></div>
         </div>
     );

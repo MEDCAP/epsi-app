@@ -33,6 +33,7 @@ import io
 
 # Constants
 DICOM_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/data MRS/proton/1/"
+DATASET_FOLDER = "/Users/benjaminyoon/Desktop/PIGI folder/Projects/Project4 HP MRI Web Application/hp-mri-web-application-yoonbenjamin/data/data MRS/epsi/"
 
 
 # Example of function definition
@@ -92,6 +93,23 @@ def get_num_slider_values():
     dicom_files = [file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")]
     num_slider_values = len(dicom_files)
     return num_slider_values
+
+
+def count_datasets():
+    """
+    Counts the number of dataset folders within a specified EPSI folder.
+
+    Returns:
+    int: Number of dataset folders.
+    """
+    # Initialize the count of datasets
+    dataset_count = 0
+
+    # List all entries in the directory given by 'epsi_folder'
+    for entry in os.listdir(DATASET_FOLDER):
+        dataset_count += 1
+
+    return dataset_count
 
 
 # Additional functions would follow with similar structured comments...

@@ -20,6 +20,8 @@ import { Link } from 'react-router-dom';
 function HomePage() {
   const [imageUrl, setImageUrl] = useState('');
   const [numSliderValues, setNumSliderValues] = useState(0);
+  const [numDatasets, setNumDatasets] = useState(0);
+  const [magnetType, setMagnetType] = useState('HUPC'); // Default magnet type 
   const [hpMriData, setHpMriData] = useState({
     xValues: [], data: [], columns: 0, spectralData: [], rows: 0,
     longitudinalScale: 0, perpendicularScale: 0, longitudinalMeasurement: 0, perpendicularMeasurement: 0, plotShift: [0, 0]
@@ -39,18 +41,18 @@ function HomePage() {
   const [scaleOffsetX, setScaleOffsetX] = useState(1.335); // Scale factor for columns during selection
   const [scaleOffsetY, setScaleOffsetY] = useState(1.875); // Scale factor for rows during selection
   const [threshold, setThreshold] = useState(0.2); // Initial threshold value for HP MRI data filtering
-  const [magnetType, setMagnetType] = useState('HUPC');
 
   // Effect hook for initial data fetch and window resize event listener.
   useEffect(() => {
     fetchNumSliderValues();
+    fetchCountDatasets();
     fetchInitialData();
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [magnetType]);
 
   // Event handlers for UI control components.
   const handleSliderChange = (newValue, contrastValue) => sendSliderValueToBackend(newValue, contrastValue);
@@ -138,7 +140,7 @@ function HomePage() {
   };
 
   const fetchNumSliderValues = () => {
-    fetch('http://127.0.0.1:5000/api/get_num_slider_values')
+    fetch(`http://127.0.0.1:5000/api/get_num_slider_values/${magnetType}`)
       .then(response => response.json())
       .then(data => {
         setNumSliderValues(data.numSliderValues);
@@ -155,6 +157,15 @@ function HomePage() {
     }).then(response => response.json())
       .then(data => setHpMriData(data))
       .catch(error => console.error('Error fetching HP MRI data:', error));
+  };
+
+  const fetchCountDatasets = () => {
+    fetch(`http://127.0.0.1:5000/api/get_count_datasets/${magnetType}`)
+      .then(response => response.json())
+      .then(data => {
+        setNumDatasets(data.numDatasets);
+      })
+      .catch(error => console.error('Failed to fetch number of slider values:', error));
   };
 
   // Render the HomePage component.
@@ -185,12 +196,16 @@ function HomePage() {
         onContrastChange={handleContrastChange}
         onDatasetChange={handleDatasetChange}
         datasetIndex={datasetIndex}
+        numDatasets={numDatasets}
       />
       <div className="image-and-plot-container" onClick={handleVoxelSelect}>
         <div className="app-content">
         </div>
-        <img src={imageUrl} alt="Proton" className="proton-image" />
-        <div className='plot-container' ref={plotContainerRef} style={{ transform: `translate(${offsetX}px, ${offsetY}px)` }}>
+        <img src={imageUrl}
+          alt="Proton"
+          className={`proton-image-${magnetType.toLowerCase().replace(" ", "-")}`}
+        />
+        <div className={`plot-container-${magnetType.toLowerCase().replace(" ", "-")}`} ref={plotContainerRef} style={{ transform: `translate(${offsetX}px, ${offsetY}px)` }}>
           <PlotComponent
             xValues={hpMriData.xValues}
             data={hpMriData.data}
@@ -204,6 +219,7 @@ function HomePage() {
             plotShift={hpMriData.plotShift}
             windowSize={windowSize}
             showHpMriData={showHpMriData}
+            magnetType={magnetType}
           />
         </div>
         {selecting && (
