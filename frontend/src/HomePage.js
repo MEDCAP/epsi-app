@@ -130,15 +130,6 @@ function HomePage() {
     setMagnetType(newType);
   };
 
-  // Fetches and updates the proton image based on slider input.
-  const sendSliderValueToBackend = (newValue, newContrastValue) => {
-    fetch(`http://127.0.0.1:5000/api/get_proton_picture/${newValue}`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contrast: newContrastValue, magnetType })
-    }).then(response => response.blob()).then(imageBlob => setImageUrl(URL.createObjectURL(imageBlob)))
-      .catch(error => console.error('Error fetching proton image:', error));
-  };
-
   const fetchNumSliderValues = () => {
     fetch(`http://127.0.0.1:5000/api/get_num_slider_values/${magnetType}`)
       .then(response => response.json())
@@ -146,6 +137,24 @@ function HomePage() {
         setNumSliderValues(data.numSliderValues);
       })
       .catch(error => console.error('Failed to fetch number of slider values:', error));
+  };
+
+  const fetchCountDatasets = () => {
+    fetch(`http://127.0.0.1:5000/api/get_count_datasets/${magnetType}`)
+      .then(response => response.json())
+      .then(data => {
+        setNumDatasets(data.numDatasets);
+      })
+      .catch(error => console.error('Failed to fetch number of slider values:', error));
+  };
+
+  // Fetches and updates the proton image based on slider input.
+  const sendSliderValueToBackend = (newValue, newContrastValue) => {
+    fetch(`http://127.0.0.1:5000/api/get_proton_picture/${newValue}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contrast: newContrastValue, magnetType })
+    }).then(response => response.blob()).then(imageBlob => setImageUrl(URL.createObjectURL(imageBlob)))
+      .catch(error => console.error('Error fetching proton image:', error));
   };
 
   // Fetches and updates the HP MRI data plot based on slider input.
@@ -157,15 +166,6 @@ function HomePage() {
     }).then(response => response.json())
       .then(data => setHpMriData(data))
       .catch(error => console.error('Error fetching HP MRI data:', error));
-  };
-
-  const fetchCountDatasets = () => {
-    fetch(`http://127.0.0.1:5000/api/get_count_datasets/${magnetType}`)
-      .then(response => response.json())
-      .then(data => {
-        setNumDatasets(data.numDatasets);
-      })
-      .catch(error => console.error('Failed to fetch number of slider values:', error));
   };
 
   // Render the HomePage component.

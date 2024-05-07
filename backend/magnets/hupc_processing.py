@@ -22,6 +22,42 @@ COLUMNS = 16
 MOVING_AVERAGE_WINDOW = 1
 
 
+def get_num_slider_values():
+    """
+    Calculate the number of slider values based on available datasets or images.
+
+    Returns:
+        int: The total number of slider values (datasets or images).
+    """
+    dicom_files = [file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")]
+    num_slider_values = len(dicom_files)
+    return num_slider_values
+
+
+def count_datasets():
+    """
+    Counts the number of dataset folders within a specified EPSI folder.
+    Folder names follow the format: 'epsi_16x12_13c_xx.fid', where 'xx' is the folder number.
+
+    Returns:
+    int: Number of dataset folders.
+    """
+    # Initialize the count of datasets
+    dataset_count = 0
+
+    # List all entries in the directory given by 'epsi_folder'
+    for entry in os.listdir(DATASET_FOLDER):
+        # Check if the entry is a directory and matches the expected pattern
+        if (
+            os.path.isdir(os.path.join(DATASET_FOLDER, entry))
+            and entry.startswith("epsi_16x12_13c_")
+            and entry.endswith(".fid")
+        ):
+            dataset_count += 1
+
+    return dataset_count
+
+
 def process_proton_picture(slider_value: int, data):
     """
     Retrieves an image based on the slider value from DICOM files, applying contrast adjustment and returning a PNG.
@@ -67,18 +103,6 @@ def process_proton_picture(slider_value: int, data):
         return jsonify({"error": str(e)}), 500
 
 
-def get_num_slider_values():
-    """
-    Calculate the number of slider values based on available datasets or images.
-
-    Returns:
-        int: The total number of slider values (datasets or images).
-    """
-    dicom_files = [file for file in os.listdir(DICOM_FOLDER) if file.endswith(".dcm")]
-    num_slider_values = len(dicom_files)
-    return num_slider_values
-
-
 def process_hp_mri_data(epsi_value, threshold):
     """
     Retrieves and processes EPSI data based on given parameters, returning sanitized data for visualization.
@@ -114,30 +138,6 @@ def process_hp_mri_data(epsi_value, threshold):
     except Exception as e:
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
-
-
-def count_datasets():
-    """
-    Counts the number of dataset folders within a specified EPSI folder.
-    Folder names follow the format: 'epsi_16x12_13c_xx.fid', where 'xx' is the folder number.
-
-    Returns:
-    int: Number of dataset folders.
-    """
-    # Initialize the count of datasets
-    dataset_count = 0
-
-    # List all entries in the directory given by 'epsi_folder'
-    for entry in os.listdir(DATASET_FOLDER):
-        # Check if the entry is a directory and matches the expected pattern
-        if (
-            os.path.isdir(os.path.join(DATASET_FOLDER, entry))
-            and entry.startswith("epsi_16x12_13c_")
-            and entry.endswith(".fid")
-        ):
-            dataset_count += 1
-
-    return dataset_count
 
 
 def read_epsi_plot(epsi_value, threshold):

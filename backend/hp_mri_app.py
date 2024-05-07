@@ -11,6 +11,52 @@ app = Flask(__name__)
 CORS(app)
 
 
+@app.route("/api/get_num_slider_values/<magnet_type>", methods=["GET"])
+def fetch_num_slider_values(magnet_type):
+    """
+    API endpoint to fetch the number of slider values.
+
+    Parameters:
+        magnet_type: The magnet type current selected.
+
+    Returns:
+        JSON: Contains the number of slider values.
+    """
+    if magnet_type == "HUPC":
+        num_values = hupc_processing.get_num_slider_values()
+    elif magnet_type == "Clinical":
+        num_values = 0
+    elif magnet_type == "MR Solutions":
+        num_values = mr_solutions_processing.get_num_slider_values()
+    else:
+        return jsonify({"error": "Invalid magnet type"}), 400
+
+    return jsonify({"numSliderValues": num_values})
+
+
+@app.route("/api/get_count_datasets/<magnet_type>", methods=["GET"])
+def fetch_count_datasets(magnet_type):
+    """
+    API endpoint to fetch the number of datasets.
+
+    Parameters:
+        magnet_type: The magnet type current selected.
+
+    Returns:
+        JSON: Contains the number of datasets.
+    """
+    if magnet_type == "HUPC":
+        num_values = hupc_processing.count_datasets()
+    elif magnet_type == "Clinical":
+        num_values = 0
+    elif magnet_type == "MR Solutions":
+        num_values = mr_solutions_processing.count_datasets()
+    else:
+        return jsonify({"error": "Invalid magnet type"}), 400
+
+    return jsonify({"numDatasets": num_values})
+
+
 @app.route("/api/get_proton_picture/<int:slider_value>", methods=["POST"])
 def get_proton_picture(slider_value: int):
     """
@@ -39,29 +85,6 @@ def get_proton_picture(slider_value: int):
         return jsonify({"error": "Invalid magnet type"}), 400
 
     return result
-
-
-@app.route("/api/get_num_slider_values/<magnet_type>", methods=["GET"])
-def fetch_num_slider_values(magnet_type):
-    """
-    API endpoint to fetch the number of slider values.
-
-    Parameters:
-        magnet_type: The magnet type current selected.
-
-    Returns:
-        JSON: Contains the number of slider values.
-    """
-    if magnet_type == "HUPC":
-        num_values = hupc_processing.get_num_slider_values()
-    elif magnet_type == "Clinical":
-        num_values = 0
-    elif magnet_type == "MR Solutions":
-        num_values = mr_solutions_processing.get_num_slider_values()
-    else:
-        return jsonify({"error": "Invalid magnet type"}), 400
-
-    return jsonify({"numSliderValues": num_values})
 
 
 @app.route("/api/get_hp_mri_data/<int:hp_mri_dataset>", methods=["POST"])
@@ -94,29 +117,6 @@ def get_hp_mri_data(hp_mri_dataset):
         return jsonify({"error": "Invalid magnet type"}), 400
 
     return result
-
-
-@app.route("/api/get_count_datasets/<magnet_type>", methods=["GET"])
-def fetch_count_datasets(magnet_type):
-    """
-    API endpoint to fetch the number of datasets.
-
-    Parameters:
-        magnet_type: The magnet type current selected.
-
-    Returns:
-        JSON: Contains the number of datasets.
-    """
-    if magnet_type == "HUPC":
-        num_values = hupc_processing.count_datasets()
-    elif magnet_type == "Clinical":
-        num_values = 0
-    elif magnet_type == "MR Solutions":
-        num_values = mr_solutions_processing.count_datasets()
-    else:
-        return jsonify({"error": "Invalid magnet type"}), 400
-
-    return jsonify({"numDatasets": num_values})
 
 
 @app.route("/upload", methods=["POST"])
